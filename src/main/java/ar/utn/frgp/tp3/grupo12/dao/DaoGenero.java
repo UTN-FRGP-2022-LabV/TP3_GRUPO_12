@@ -11,6 +11,7 @@ public class DaoGenero {
 	 * El id no debe estar seteado
 	 * @param genero
 	 */
+/*
 	public static void add(Genero genero) {
 		ConfigHibernate config = new ConfigHibernate();
 		Session session = config.abrirConexion();
@@ -21,12 +22,13 @@ public class DaoGenero {
 		
 		config.cerrarSession();
 	}
-	
+	*/
 	/**
 	 * Lee un elemento con el id
 	 * @param id
 	 * @return
 	 */
+	/*
 	public static Genero readOne(int id) {
 		ConfigHibernate config = new ConfigHibernate();
 		Session session = config.abrirConexion();
@@ -38,12 +40,13 @@ public class DaoGenero {
 		
 		return genero;
 	}
-	
+	*/
 	/**
 	 * Actualiza el elemento en la tabla
 	 * Debe tener seteado el id
 	 * @param genero
 	 */
+	/*
 	public static void update(Genero genero) {
 		ConfigHibernate config = new ConfigHibernate();
 		Session session = config.abrirConexion();
@@ -54,12 +57,13 @@ public class DaoGenero {
 		
 		config.cerrarSession();
 	}
-
+*/
 	/**
 	 * Elimina el elemento en la tabla
 	 * Debe tener seteado el id
 	 * @param genero
 	 */
+	/*
 	public static void delete(Genero genero) {
 		ConfigHibernate config = new ConfigHibernate();
 		Session session = config.abrirConexion();
@@ -71,5 +75,5 @@ public class DaoGenero {
 		config.cerrarSession();
 	
 	}
-	
+	*/
 }

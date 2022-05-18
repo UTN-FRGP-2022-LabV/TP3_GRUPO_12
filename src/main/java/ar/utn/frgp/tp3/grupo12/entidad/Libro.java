@@ -36,15 +36,15 @@ public class Libro implements Serializable{
 	
 	@Column(name="CANTIDAD_PAGINAS", nullable=false)
 	private Integer cantidadDePaginas;
-	
-	@ManyToOne(fetch=FetchType.LAZY, cascade= {CascadeType.ALL})
+	//fetch=FetchType.LAZY, 
+	@ManyToOne(fetch=FetchType.EAGER, cascade= {CascadeType.ALL})
 	@JoinColumn(name="ID_AUTOR")
 	private Autor autor;
 	
 	@Column(name="DESCRIPCION", nullable=false)
 	private String descripcion;
 	
-	@ManyToMany(cascade= {CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.ALL})
 	@JoinTable(name="LIBROS_X_GENERO", joinColumns= {@JoinColumn(name="ISBN_LIBRO")}, inverseJoinColumns= {@JoinColumn(name="ID_GENERO")})
 	private Set<Genero> generos = new HashSet<Genero>();
 	

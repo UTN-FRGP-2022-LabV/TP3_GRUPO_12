@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.utn.frgp.tp3.grupo12.dao.ConfigHibernate;
 import ar.utn.frgp.tp3.grupo12.dao.DaoBiblioteca;
 import ar.utn.frgp.tp3.grupo12.dao.DaoGenero;
 import ar.utn.frgp.tp3.grupo12.entidad.Autor;
@@ -52,6 +53,8 @@ public class App
     	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
     	
     	System.out.println(registroBiblioteca);
+    	
+    	ConfigHibernate.cerrarSessionFactory();
     	
     }
 }

@@ -12,14 +12,15 @@ public class DaoBiblioteca {
 	 * @param biblioteca
 	 */
 	public static void add(Biblioteca biblioteca) {
-		ConfigHibernate config = new ConfigHibernate();
-		Session session = config.abrirConexion();
-		
+		//ConfigHibernate config = new ConfigHibernate();
+//		Session session = config.abrirConexion();
+		Session session = ConfigHibernate.getSession();
 		session.beginTransaction();
 		session.save(biblioteca);
 		session.getTransaction().commit();
 		
-		config.cerrarSession();
+		session.close();
+		//config.cerrarSession();
 	}
 	
 	/**
@@ -28,13 +29,14 @@ public class DaoBiblioteca {
 	 * @return
 	 */
 	public static Biblioteca readOne(int id) {
-		ConfigHibernate config = new ConfigHibernate();
-		Session session = config.abrirConexion();
+		//ConfigHibernate config = new ConfigHibernate();
+//		Session session = config.abrirConexion();
+		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		Biblioteca biblioteca = (Biblioteca) session.get(Biblioteca.class, id);
-		
-		config.cerrarSession();
+		session.close();
+		//config.cerrarSession();
 		
 		return biblioteca;
 	}
@@ -45,14 +47,15 @@ public class DaoBiblioteca {
 	 * @param biblioteca
 	 */
 	public static void update(Biblioteca biblioteca) {
-		ConfigHibernate config = new ConfigHibernate();
-		Session session = config.abrirConexion();
+		//ConfigHibernate config = new ConfigHibernate();
+//		Session session = config.abrirConexion();
+		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		session.update(biblioteca);
 		session.getTransaction().commit();
-		
-		config.cerrarSession();
+		session.close();
+		//config.cerrarSession();
 	}
 
 	/**
@@ -61,14 +64,15 @@ public class DaoBiblioteca {
 	 * @param biblioteca
 	 */
 	public static void delete(Biblioteca biblioteca) {
-		ConfigHibernate config = new ConfigHibernate();
-		Session session = config.abrirConexion();
+		//ConfigHibernate config = new ConfigHibernate();
+//		Session session = config.abrirConexion();
+		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		session.delete(biblioteca);
 		session.getTransaction().commit();
-		
-		config.cerrarSession();
+		session.close();
+		//config.cerrarSession();
 	
 	}
 	
