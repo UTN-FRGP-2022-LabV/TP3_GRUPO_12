@@ -49,9 +49,9 @@ public class App
     	
     	DaoBiblioteca.add(biblioteca);
     	
-    	//Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
+    	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
     	
-    	//System.out.println(registroBiblioteca);
+    	System.out.println(registroBiblioteca);
     	
     }
 }
