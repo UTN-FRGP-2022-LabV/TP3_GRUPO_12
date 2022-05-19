@@ -9,7 +9,6 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 public class ConfigHibernate {
 	private static SessionFactory sessionFactory;
-	//private Session session;
 	
 	static {
         try{
@@ -27,32 +26,30 @@ public class ConfigHibernate {
     	sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 	}
 	
+	/**
+	 * getSession devuelve una session, una vez utilizado debe llamar al metodo close de session
+	 * @return
+	 * @throws HibernateException
+	 */
 	public static Session getSession() throws HibernateException {
 		 
         Session retSession=null;
             try {
                 retSession = sessionFactory.openSession();
             }catch(Throwable t){
-            System.err.println("Exception while getting session.. ");
-            t.printStackTrace();
+            	System.err.println("Ocurrió una Excepción mientras intentaba obtener una session.. ");
+            	t.printStackTrace();
             }
             if(retSession == null) {
-                System.err.println("session is discovered null");
+                System.err.println("La sesion es invalida");
             }
  
             return retSession;
     }
-	/*
-	public Session abrirConexion() {
-		session = sessionFactory.openSession();
-		return session;
-	}
-	
-	public void cerrarSession() {
-		session.close();
-		//cerrarSessionFactory();
-	}
-*/
+
+	/**
+	 * cerrarSessionFactory debe llamarse inmediatamente antes de terminar el programa, y no tiene que haber ningun otro proceso despues 
+	 */
 	public static void cerrarSessionFactory() {
 		sessionFactory.close();
 	}

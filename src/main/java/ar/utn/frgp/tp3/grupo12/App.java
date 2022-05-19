@@ -16,56 +16,80 @@ import ar.utn.frgp.tp3.grupo12.enums.IdiomaEnum;
 
 /**
  * TP 3 - Grupo 12
- *
+ * Integrantes:
+ * 
+ * Marcos Zone
+ * Manuel Oreguy
+ * Sergio Palacio
  */
+
 public class App 
 {
 	public static void main( String[] args )
     {
-    	//DaoGenero.add(new Genero("Fantasia"));
-
+		// AGREGAR
     	nuevoRegistro1();
     	nuevoRegistro2();
     	nuevoRegistro3();
     	nuevoRegistro4();
     	nuevoRegistro5();
+    	nuevoRegistro6();
     	
+    	int bibliotecaId = 1;
+    	
+    	//LISTAR
+    	System.out.println("registro antes de modificar: " );
+    	LeerRegistro(bibliotecaId);
+    	
+    	// MODIFICAR
+    	ModificarEstadoRegistro(bibliotecaId);
+    	
+    	//LISTAR
+    	System.out.println("registro modificado: " );
+    	LeerRegistro(bibliotecaId);
+    	
+    	//BORAR
+    	bibliotecaId = 2;
+    	System.out.println("Eliminar registro" );
+    	BorrarRegistro(bibliotecaId);
+    	
+    	//Imprime todos los registros creados en la tabla Biblioteca
+    	System.out.println("Listar todos los registros de la tabla Biblioteca" );
+    	DaoBiblioteca.findAll().stream().forEach(System.out::println);
+    	
+    	//Cerrar Session Factory
     	ConfigHibernate.cerrarSessionFactory();
     }
     
     public static void nuevoRegistro1() {
-
-	Nacionalidad nacionalidad = new Nacionalidad("Britanico");
+    	
+		Nacionalidad nacionalidad = new Nacionalidad("Britanico");
+		
+		Autor autor = new Autor("J.R.R", "Tolkien", nacionalidad, "--");
 	
-	Autor autor = new Autor("J.R.R", "Tolkien", nacionalidad, "--");
-
-	Set<Genero> generos = new HashSet<Genero>();
-	generos.add(new Genero("Fantasía"));
-	generos.add(new Genero("Literatura Fantástica"));
-	generos.add(new Genero("Ciencia Ficción"));
-
+		Set<Genero> generos = new HashSet<Genero>();
+		generos.add(new Genero("Fantasía"));
+		generos.add(new Genero("Literatura Fantástica"));
+		generos.add(new Genero("Ciencia Ficción"));
 	
-	Libro libro = new Libro(
-			"9788445003022", 
-			"El Señor de los Anillos", 
-			new Date(), 
-			IdiomaEnum.ESPANIOL.name(), 
-			1392,
-			autor, 
-			"Los Anillos de Poder fueron forjados en antiguos tiempos por los herreros Elfos, y Sauron, el Señor Oscuro, forjó el Anillo Único..", 
-			generos);
-	
-	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA.value);
-	
-	DaoBiblioteca.add(biblioteca);
-	
-	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
-	
-	System.out.println(registroBiblioteca);
+		
+		Libro libro = new Libro(
+				"9788445003022", 
+				"El Señor de los Anillos", 
+				new Date(), 
+				IdiomaEnum.ESPANIOL, 
+				1392,
+				autor, 
+				"Los Anillos de Poder fueron forjados en antiguos tiempos por los herreros Elfos, y Sauron, el Señor Oscuro, forjó el Anillo Único..", 
+				generos);
+		
+		Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
+		
+		DaoBiblioteca.save(biblioteca);
     }
     
     public static void nuevoRegistro2() {
-
+    	
     	Nacionalidad nacionalidad = new Nacionalidad("Britanico");
     	
     	Autor autor = new Autor("J. K.", "Rowling", nacionalidad, "--");
@@ -80,23 +104,19 @@ public class App
     			"1788445003023", 
     			"Harry Potter", 
     			new Date(), 
-    			IdiomaEnum.ESPANIOL.name(), 
+    			IdiomaEnum.ESPANIOL, 
     			3400,
     			autor, 
     			"Las aventuras del joven aprendiz de magia y hechicería Harry Potter y sus amigos Hermione Granger y Ron Weasley, durante los años que pasan en el Colegio Hogwarts de Magia y Hechicería.", 
     			generos);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA.value);
+    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
     	
-    	DaoBiblioteca.add(biblioteca);
-    	
-    	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
-    	
-    	System.out.println(registroBiblioteca);
-        }
+    	DaoBiblioteca.save(biblioteca);
+    }
     
     public static void nuevoRegistro3() {
-
+    	
     	Nacionalidad nacionalidad = new Nacionalidad("Argentino");
     	
     	Autor autor = new Autor("Edgardo", "Scott", nacionalidad, "--");
@@ -111,20 +131,16 @@ public class App
     			"2788445033025", 
     			"Contacto", 
     			new Date(), 
-    			IdiomaEnum.ESPANIOL.name(), 
+    			IdiomaEnum.ESPANIOL, 
     			853,
     			autor, 
     			"Dispuesto a recuperar lo que parece perdido, como ya hizo Odiseo en la isla de Calipso (pero con Internet), Scott echa mano a lo que tienen todos los aislados..", 
     			generos);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA.value);
+    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.PRESTADO);
     	
-    	DaoBiblioteca.add(biblioteca);
-    	
-    	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
-    	
-    	System.out.println(registroBiblioteca);
-        }
+    	DaoBiblioteca.save(biblioteca);
+    }
     
     public static void nuevoRegistro4() {
 
@@ -142,20 +158,16 @@ public class App
     			"5588445033026", 
     			"Diario de una Pasion", 
     			new Date(), 
-    			IdiomaEnum.ESPANIOL.name(), 
+    			IdiomaEnum.INGLES, 
     			853,
     			autor, 
     			"Una dolorosa historia sobre el poder duradero del amor y sus milagros. Un hombre tiene un cuaderno viejo, traído y llevado mil veces, en su regazo.", 
     			generos);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA.value);
+    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.PRESTADO);
     	
-    	DaoBiblioteca.add(biblioteca);
-    	
-    	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
-    	
-    	System.out.println(registroBiblioteca);
-        }
+    	DaoBiblioteca.save(biblioteca);
+    }
     
     public static void nuevoRegistro5() {
 
@@ -173,18 +185,57 @@ public class App
     			"9998445033029", 
     			"Crepusculo", 
     			new Date(), 
-    			IdiomaEnum.ESPANIOL.name(), 
+    			IdiomaEnum.ESPANIOL, 
     			853,
     			autor, 
     			"Cuando Edward Cullen y Bella Swan se conocieron en «Crepúsculo», nació una historia de amor icónica.", 
     			generos);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA.value);
+    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
     	
-    	DaoBiblioteca.add(biblioteca);
+    	DaoBiblioteca.save(biblioteca);
+    }
+    
+    public static void nuevoRegistro6() {
+
+    	Nacionalidad nacionalidad = new Nacionalidad("Aleman");
     	
-    	Biblioteca registroBiblioteca = DaoBiblioteca.readOne(1);
+    	Autor autor = new Autor("Albert", "Einstein", nacionalidad, "--");
+
+    	Set<Genero> generos = new HashSet<Genero>();
+    	generos.add(new Genero("Cientifico"));
+
     	
-    	System.out.println(registroBiblioteca);
-        }
+    	Libro libro = new Libro(
+    			"9788420609744", 
+    			"Sobre la teoria de la relatividad especial y general", 
+    			new Date(), 
+    			IdiomaEnum.ALEMAN, 
+    			168,
+    			autor, 
+    			"Obra publicada en 1917, pocos años antes de que Albert Einstein (1879-1955) estableciera definitivamente las famosas ecuaciones de campo de la relatividad general.", 
+    			generos);
+    	
+    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
+    	
+    	DaoBiblioteca.save(biblioteca);
+    }
+    
+    public static void ModificarEstadoRegistro(int id) {
+    	Biblioteca ModificarBiblioteca = DaoBiblioteca.findById(id);
+    	ModificarBiblioteca.setEstado(EstadoLibroEnum.PRESTADO);
+    	
+    	DaoBiblioteca.update(ModificarBiblioteca);
+    }
+   
+    public static void BorrarRegistro(int id) {
+    	Biblioteca BorrarBiblioteca = DaoBiblioteca.findById(id); 
+    	
+    	DaoBiblioteca.delete(BorrarBiblioteca);  
+    }
+ 
+    public static void LeerRegistro(int id) {  
+    	Biblioteca registroBiblioteca = DaoBiblioteca.findById(id);
+		System.out.println(registroBiblioteca);
+	}
 }

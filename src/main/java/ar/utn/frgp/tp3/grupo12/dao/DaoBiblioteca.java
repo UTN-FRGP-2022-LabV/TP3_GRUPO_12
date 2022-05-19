@@ -1,5 +1,10 @@
 package ar.utn.frgp.tp3.grupo12.dao;
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import ar.utn.frgp.tp3.grupo12.entidad.Biblioteca;
@@ -11,16 +16,14 @@ public class DaoBiblioteca {
 	 * El id no debe estar seteado
 	 * @param biblioteca
 	 */
-	public static void add(Biblioteca biblioteca) {
-		//ConfigHibernate config = new ConfigHibernate();
-//		Session session = config.abrirConexion();
+	public static void save(Biblioteca biblioteca) {
 		Session session = ConfigHibernate.getSession();
+		
 		session.beginTransaction();
 		session.save(biblioteca);
 		session.getTransaction().commit();
 		
 		session.close();
-		//config.cerrarSession();
 	}
 	
 	/**
@@ -28,15 +31,12 @@ public class DaoBiblioteca {
 	 * @param id
 	 * @return
 	 */
-	public static Biblioteca readOne(int id) {
-		//ConfigHibernate config = new ConfigHibernate();
-//		Session session = config.abrirConexion();
+	public static Biblioteca findById(int id) {
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		Biblioteca biblioteca = (Biblioteca) session.get(Biblioteca.class, id);
 		session.close();
-		//config.cerrarSession();
 		
 		return biblioteca;
 	}
@@ -47,15 +47,13 @@ public class DaoBiblioteca {
 	 * @param biblioteca
 	 */
 	public static void update(Biblioteca biblioteca) {
-		//ConfigHibernate config = new ConfigHibernate();
-//		Session session = config.abrirConexion();
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		session.update(biblioteca);
 		session.getTransaction().commit();
+		
 		session.close();
-		//config.cerrarSession();
 	}
 
 	/**
@@ -64,16 +62,21 @@ public class DaoBiblioteca {
 	 * @param biblioteca
 	 */
 	public static void delete(Biblioteca biblioteca) {
-		//ConfigHibernate config = new ConfigHibernate();
-//		Session session = config.abrirConexion();
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
 		session.delete(biblioteca);
 		session.getTransaction().commit();
+
 		session.close();
-		//config.cerrarSession();
+	}
 	
+	
+	public static List<Biblioteca> findAll() {
+		Session session = ConfigHibernate.getSession();
+		Criteria cr = session.createCriteria(Biblioteca.class);
+		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return cr.list();
 	}
 	
 }

@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import ar.utn.frgp.tp3.grupo12.enums.EstadoLibroEnum;
 
 @Entity
 @Table(name="BIBLIOTECA_REFS")
@@ -31,14 +35,15 @@ public class Biblioteca implements Serializable{
 	@Column(name="FECHA_ALTA", nullable=false)
 	private Date fechaDeAlta;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name="ESTADO", nullable=false)
-	private int estado;
+	private EstadoLibroEnum estado;
 	
 	public Biblioteca() {
 	}
 
 	
-	public Biblioteca(Libro libro, Date fechaDeAlta, int estado) {
+	public Biblioteca(Libro libro, Date fechaDeAlta, EstadoLibroEnum estado) {
 		super();
 		this.libro = libro;
 		this.fechaDeAlta = fechaDeAlta;
@@ -70,11 +75,11 @@ public class Biblioteca implements Serializable{
 		this.fechaDeAlta = fechaDeAlta;
 	}
 
-	public int getEstado() {
+	public EstadoLibroEnum getEstado() {
 		return estado;
 	}
 
-	public void setEstado(int estado) {
+	public void setEstado(EstadoLibroEnum estado) {
 		this.estado = estado;
 	}
 

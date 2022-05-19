@@ -1,12 +1,12 @@
 package ar.utn.frgp.tp3.grupo12.enums;
 
 public enum EstadoLibroEnum {
-	EN_BIBLIOTECA(1),
-	PRESTADO(2);
+	EN_BIBLIOTECA("EN_BIBLIOTECA"),
+	PRESTADO("PRESTADO");
 	
-	public final int value;
+	public final String value;
 	
-	private EstadoLibroEnum(int value) {
+	private EstadoLibroEnum(String value) {
 		this.value = value;
 	}
 }

@@ -2,20 +2,20 @@ package ar.utn.frgp.tp3.grupo12.dao;
 
 import org.hibernate.Session;
 
-import ar.utn.frgp.tp3.grupo12.entidad.Genero;
+import ar.utn.frgp.tp3.grupo12.entidad.Nacionalidad;
 
-public class DaoGenero {
+public class DaoNacionalidad {
 	
 	/**
 	 * Agrega el elemento a la tabla
 	 * El id no debe estar seteado
-	 * @param genero
+	 * @param nacionalidad
 	 */
-	public static void save(Genero genero) {
+	public static void save(Nacionalidad nac) {
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
-		session.save(genero);
+		session.save(nac);
 		session.getTransaction().commit();
 		
 		session.close();
@@ -26,26 +26,26 @@ public class DaoGenero {
 	 * @param id
 	 * @return
 	 */
-	public static Genero findById(int id) {
+	public static Nacionalidad findById(int id) {
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
-		Genero genero = (Genero) session.get(Genero.class, id);
+		Nacionalidad nac = (Nacionalidad) session.get(Nacionalidad.class, id);
 		session.close();
 		
-		return genero;
+		return nac;
 	}
 	
 	/**
 	 * Actualiza el elemento en la tabla
 	 * Debe tener seteado el id
-	 * @param genero
+	 * @param nacionalidad
 	 */
-	public static void update(Genero genero) {
+	public static void update(Nacionalidad nac) {
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
-		session.update(genero);
+		session.update(nac);
 		session.getTransaction().commit();
 		
 		session.close();
@@ -54,15 +54,16 @@ public class DaoGenero {
 	/**
 	 * Elimina el elemento en la tabla
 	 * Debe tener seteado el id
-	 * @param genero
+	 * @param nacionalidad
 	 */
-	public static void delete(Genero genero) {
+	public static void delete(Nacionalidad nac) {
 		Session session = ConfigHibernate.getSession();
 		
 		session.beginTransaction();
-		session.delete(genero);
+		session.delete(nac);
 		session.getTransaction().commit();
-
+		
 		session.close();
+	
 	}
 }

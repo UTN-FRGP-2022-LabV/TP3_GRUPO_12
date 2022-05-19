@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +17,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import ar.utn.frgp.tp3.grupo12.enums.IdiomaEnum;
 
 @Entity
 @Table(name="LIBROS")
@@ -31,8 +35,9 @@ public class Libro implements Serializable{
 	@Column(name="FECHA_LANZAMIENTO", nullable=false)
 	private Date fechaDeLanzamiento;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name="IDIOMA", nullable=false)
-	private String idioma;
+	private IdiomaEnum idioma;
 	
 	@Column(name="CANTIDAD_PAGINAS", nullable=false)
 	private Integer cantidadDePaginas;
@@ -51,7 +56,7 @@ public class Libro implements Serializable{
 	public Libro() {
 	}
 	
-	public Libro(String isbn, String titulo, Date fechaDeLanzamiento, String idioma, Integer cantidadDePaginas,
+	public Libro(String isbn, String titulo, Date fechaDeLanzamiento, IdiomaEnum idioma, Integer cantidadDePaginas,
 			Autor autor, String descripcion, Set<Genero> generos) {
 		super();
 		this.isbn = isbn;
@@ -90,11 +95,11 @@ public class Libro implements Serializable{
 		this.fechaDeLanzamiento = fechaDeLanzamiento;
 	}
 
-	public String getIdioma() {
+	public IdiomaEnum getIdioma() {
 		return idioma;
 	}
 
-	public void setIdioma(String idioma) {
+	public void setIdioma(IdiomaEnum idioma) {
 		this.idioma = idioma;
 	}
 
