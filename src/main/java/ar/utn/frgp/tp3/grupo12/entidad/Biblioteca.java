@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import ar.utn.frgp.tp3.grupo12.enums.EstadoLibroEnum;
 
 @Entity
-@Table(name="BIBLIOTECA_REFS")
+@Table(name="BIBLIOTECA")
 public class Biblioteca implements Serializable{
 	private static final long serialVersionUID = 1L;
 

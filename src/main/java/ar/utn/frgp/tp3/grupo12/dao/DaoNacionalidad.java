@@ -1,7 +1,11 @@
 package ar.utn.frgp.tp3.grupo12.dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+import ar.utn.frgp.tp3.grupo12.entidad.Biblioteca;
 import ar.utn.frgp.tp3.grupo12.entidad.Nacionalidad;
 
 public class DaoNacionalidad {
@@ -65,5 +69,12 @@ public class DaoNacionalidad {
 		
 		session.close();
 	
+	}
+	
+	public static List<Nacionalidad> findAll() {
+		Session session = ConfigHibernate.getSession();
+		Criteria cr = session.createCriteria(Nacionalidad.class);
+		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return cr.list();
 	}
 }

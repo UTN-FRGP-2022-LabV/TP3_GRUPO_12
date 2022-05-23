@@ -1,8 +1,12 @@
 package ar.utn.frgp.tp3.grupo12.dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import ar.utn.frgp.tp3.grupo12.entidad.Autor;
+import ar.utn.frgp.tp3.grupo12.entidad.Nacionalidad;
 
 public class DaoAutor {
 	/**
@@ -64,5 +68,12 @@ public class DaoAutor {
 		
 		session.close();
 	
+	}
+	
+	public static List<Autor> findAll() {
+		Session session = ConfigHibernate.getSession();
+		Criteria cr = session.createCriteria(Autor.class);
+		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return cr.list();
 	}
 }

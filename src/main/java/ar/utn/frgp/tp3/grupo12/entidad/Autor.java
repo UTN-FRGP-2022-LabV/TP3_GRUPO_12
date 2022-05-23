@@ -28,8 +28,8 @@ public class Autor implements Serializable{
 	
 	@Column(name="APELLIDO", nullable=false)	
 	private String apellido;
-	//fetch=FetchType.LAZY, 
-	@ManyToOne(fetch=FetchType.EAGER,cascade= {CascadeType.ALL})
+	
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ID_NACIONALIDAD")
 	private Nacionalidad nacionalidad;
 	

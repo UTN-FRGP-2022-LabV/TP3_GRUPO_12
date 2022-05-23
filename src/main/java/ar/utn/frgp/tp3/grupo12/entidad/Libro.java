@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -41,15 +40,15 @@ public class Libro implements Serializable{
 	
 	@Column(name="CANTIDAD_PAGINAS", nullable=false)
 	private Integer cantidadDePaginas;
-	//fetch=FetchType.LAZY, 
-	@ManyToOne(fetch=FetchType.EAGER, cascade= {CascadeType.ALL})
+	
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ID_AUTOR")
 	private Autor autor;
 	
 	@Column(name="DESCRIPCION", nullable=false)
 	private String descripcion;
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="LIBROS_X_GENERO", joinColumns= {@JoinColumn(name="ISBN_LIBRO")}, inverseJoinColumns= {@JoinColumn(name="ID_GENERO")})
 	private Set<Genero> generos = new HashSet<Genero>();
 	
