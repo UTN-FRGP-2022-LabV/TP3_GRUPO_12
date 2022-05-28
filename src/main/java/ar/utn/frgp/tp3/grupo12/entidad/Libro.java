@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import ar.utn.frgp.tp3.grupo12.enums.IdiomaEnum;
+import ar.utn.frgp.tp3.grupo12.utils.DateUtils;
 
 @Entity
 @Table(name="LIBROS")
@@ -136,7 +137,7 @@ public class Libro implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", fechaDeLanzamiento=" + fechaDeLanzamiento + ", idioma="
+		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", fechaDeLanzamiento=" + DateUtils.formatFromDate(fechaDeLanzamiento) + ", idioma="
 				+ idioma + ", cantidadDePaginas=" + cantidadDePaginas + ", autor=" + autor + ", descripcion="
 				+ descripcion + ", generos=" + generos + "]";
 	}

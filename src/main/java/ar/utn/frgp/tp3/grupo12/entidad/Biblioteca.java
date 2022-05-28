@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import ar.utn.frgp.tp3.grupo12.enums.EstadoLibroEnum;
+import ar.utn.frgp.tp3.grupo12.utils.DateUtils;
 
 @Entity
 @Table(name="BIBLIOTECA")
@@ -85,7 +86,7 @@ public class Biblioteca implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Biblioteca [id=" + id + ", libro=" + libro + ", fechaDeAlta=" + fechaDeAlta + ", estado=" + estado
+		return "Biblioteca [id=" + id + ", libro=" + libro + ", fechaDeAlta= " + DateUtils.formatFromDate(fechaDeAlta) + " , estado=" + estado
 				+ "]";
 	}
 

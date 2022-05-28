@@ -1,3 +1,5 @@
+# TP4_GRUPO_12
+Consultas HQL 
 # TP3_GRUPO_12
 Integrantes:
 - Marcos Zone

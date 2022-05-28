@@ -1,5 +1,7 @@
 package ar.utn.frgp.tp3.grupo12;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,9 +19,10 @@ import ar.utn.frgp.tp3.grupo12.entidad.Libro;
 import ar.utn.frgp.tp3.grupo12.entidad.Nacionalidad;
 import ar.utn.frgp.tp3.grupo12.enums.EstadoLibroEnum;
 import ar.utn.frgp.tp3.grupo12.enums.IdiomaEnum;
+import ar.utn.frgp.tp3.grupo12.utils.DateUtils;
 
 /**
- * TP 3 - Grupo 12
+ * TP 4 - Grupo 12
  * Integrantes:
  * 
  * Marcos Zone
@@ -28,25 +31,84 @@ import ar.utn.frgp.tp3.grupo12.enums.IdiomaEnum;
  */
 
 public class App 
-{
+{	
 	public static void main( String[] args )
     {
-		agregarNacionalidades();
-		agregarGeneros();
-		agregarAutores();
-		
-		List<Autor> autores = DaoAutor.findAll();
-		List<Genero> generos = DaoGenero.findAll();
-		
-		// AGREGAR
-    	nuevoRegistro1(autores, generos);
-    	nuevoRegistro2(autores, generos);
-    	nuevoRegistro3(autores, generos);
-    	nuevoRegistro4(autores, generos);
-    	nuevoRegistro5(autores, generos);
-    	nuevoRegistro6(autores, generos);
+		// Se ejecuta una sola vez para insertar registros necesarios
+		try {
+			insertarRegistros();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     	
-    	int bibliotecaId = 1;
+    	//ejercicioTP3();
+    	ejercicioTP4();
+    	
+    	//Cerrar Session Factory
+    	ConfigHibernate.cerrarSessionFactory();
+    }
+
+	private static void insertarRegistros() throws ParseException {
+		List<Autor> autores = DaoAutor.findAll();
+		
+		if (autores == null || autores.isEmpty()) {
+			agregarNacionalidades();
+			agregarGeneros();
+			agregarAutores();
+			
+			autores = DaoAutor.findAll();
+			List<Genero> generos = DaoGenero.findAll();
+			
+			// AGREGAR
+	    	nuevoRegistro1(autores, generos);
+	    	nuevoRegistro2(autores, generos);
+	    	nuevoRegistro3(autores, generos);
+	    	nuevoRegistro4(autores, generos);
+	    	nuevoRegistro5(autores, generos);
+	    	nuevoRegistro6(autores, generos);
+		}
+	}
+
+	private static void ejercicioTP4() {
+		//1) Mostrar todos los libros ordenados según ISBN de mayor a menor.
+		//Los campos que se deben mostrar son todos los pertenecientes a la clase Libro.
+	
+		List<Libro> libros = DaoBiblioteca.listarOrdenadosPorISBN();
+		print("---------- Libros ordenados según ISBN de mayor a menor ----------" );
+		libros.stream().forEach(System.out::println);
+		
+		//2) Mostrar todos los libros de la biblioteca que se encuentran prestados.
+		//Los campos que se deben mostrar son ID biblioteca, fecha de alta y título del libro.
+	
+		List<Biblioteca> librosPrestados = DaoBiblioteca.listarPrestados();
+		print("---------- Libros prestados ----------" );
+		for (Biblioteca libroPrestado : librosPrestados) {
+			print("ID Biblioteca: " + libroPrestado.getId() + " - Fecha Alta: " + DateUtils.formatFromDate(libroPrestado.getFechaDeAlta()) + " - Titulo: " + libroPrestado.getLibro().getTitulo());
+		}
+		
+		//3) Mostrar todos los autores que sean de nacionalidad Argentina
+		//Los campos que se deben mostrar son todos los pertenecientes a la clase Autor y Nacionalidad
+	
+		DaoAutor.listarPorNacionalidad("Argentina");
+		
+		//4) Mostrar el libro con ISBN 12345 junto con todos sus géneros
+		//Los campos que se deben mostrar la información de la clase libro junto con todos sus géneros.
+	
+		DaoBiblioteca.listarPorISBN("12345");
+		
+		//5) Mostrar el libro que tenga el mayor número de ISBN
+		//El único campo que se debe traer en la consulta es ISBN.
+	
+		DaoBiblioteca.obtenerConMayorISBN();
+		
+		//6) Mostrar la cantidad de libros que existen para cada género.
+		//Los campos que se deben mostrar son ID género, descripción y cantidad.	
+		
+		DaoBiblioteca.obtenerCantidadLibrosPorGenero();
+	}
+
+	private static void ejercicioTP3() {
+		int bibliotecaId = 1;
     	
     	//LISTAR
     	print("---------- Registro antes de modificar: ----------" );
@@ -67,13 +129,10 @@ public class App
     	//Imprime todos los registros creados en la tabla Biblioteca
     	print("---------- Listar todos los registros de la tabla Biblioteca ----------" );
     	DaoBiblioteca.findAll().stream().forEach(System.out::println);
-    	
-    	//Cerrar Session Factory
-    	ConfigHibernate.cerrarSessionFactory();
-    }
+	}
 	
 	private static void print(Object obj) {
-		System.out.println("\n");
+		//System.out.println("\n");
 		System.out.println(obj.toString());
 	}
     
@@ -165,7 +224,7 @@ public class App
     	print("Nacionalidades agregados a la db OK");
 	}
 
-	public static void nuevoRegistro1(List<Autor> autores, List<Genero> generos) {
+	public static void nuevoRegistro1(List<Autor> autores, List<Genero> generos) throws ParseException {
 		Autor autor = autores.get(0); //Tolkien
 		
 		Set<Genero> generosLibro = new HashSet();		
@@ -176,21 +235,21 @@ public class App
 		Libro libro = new Libro(
 				"9788445003022", 
 				"El Señor de los Anillos", 
-				new Date(), 
+				DateUtils.parseFromText("01/02/2021"), 
 				IdiomaEnum.ESPANIOL, 
 				1392,
 				autor, 
 				"Los Anillos de Poder fueron forjados en antiguos tiempos por los herreros Elfos, y Sauron, el Señor Oscuro, forjó el Anillo Único..", 
 				generosLibro);
 		
-		Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
+		Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("20/10/2021"), EstadoLibroEnum.EN_BIBLIOTECA);
 		
 		DaoBiblioteca.save(biblioteca);
 		
 		print(biblioteca);
     }
    
-    public static void nuevoRegistro2(List<Autor> autores, List<Genero> generos) {
+    public static void nuevoRegistro2(List<Autor> autores, List<Genero> generos) throws ParseException {
     	
 		Autor autor = autores.get(1); //Rowling
 		
@@ -202,21 +261,21 @@ public class App
     	Libro libro = new Libro(
     			"1788445003023", 
     			"Harry Potter", 
-    			new Date(), 
+    			DateUtils.parseFromText("01/12/2019"), 
     			IdiomaEnum.ESPANIOL, 
     			3400,
     			autor, 
     			"Las aventuras del joven aprendiz de magia y hechicería Harry Potter y sus amigos Hermione Granger y Ron Weasley, durante los años que pasan en el Colegio Hogwarts de Magia y Hechicería.", 
     			generosLibro);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
+    	Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("19/04/2022"), EstadoLibroEnum.EN_BIBLIOTECA);
     	
     	DaoBiblioteca.save(biblioteca);
     	
     	print(biblioteca);
     }
         
-    public static void nuevoRegistro3(List<Autor> autores, List<Genero> generos) {
+    public static void nuevoRegistro3(List<Autor> autores, List<Genero> generos) throws ParseException {
     	
 		Autor autor = autores.get(2); //Scott
 		
@@ -228,21 +287,21 @@ public class App
     	Libro libro = new Libro(
     			"2788445033025", 
     			"Contacto", 
-    			new Date(), 
+    			DateUtils.parseFromText("01/08/2001"), 
     			IdiomaEnum.ESPANIOL, 
     			853,
     			autor, 
     			"Dispuesto a recuperar lo que parece perdido, como ya hizo Odiseo en la isla de Calipso (pero con Internet), Scott echa mano a lo que tienen todos los aislados..", 
     			generosLibro);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.PRESTADO);
+    	Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("17/05/2020"), EstadoLibroEnum.PRESTADO);
     	
     	DaoBiblioteca.save(biblioteca);
     	
     	print(biblioteca);
     }
     
-    public static void nuevoRegistro4(List<Autor> autores, List<Genero> generos) {
+    public static void nuevoRegistro4(List<Autor> autores, List<Genero> generos) throws ParseException {
     	
     	Autor autor = autores.get(3); //Sparks
 
@@ -254,21 +313,21 @@ public class App
     	Libro libro = new Libro(
     			"5588445033026", 
     			"Diario de una Pasion", 
-    			new Date(), 
+    			DateUtils.parseFromText("12/05/2021"), 
     			IdiomaEnum.INGLES, 
     			853,
     			autor, 
     			"Una dolorosa historia sobre el poder duradero del amor y sus milagros. Un hombre tiene un cuaderno viejo, traído y llevado mil veces, en su regazo.", 
     			generosLibro);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.PRESTADO);
+    	Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("01/02/2022"), EstadoLibroEnum.PRESTADO);
     	
     	DaoBiblioteca.save(biblioteca);
     	
     	print(biblioteca);
     }
     
-    public static void nuevoRegistro5(List<Autor> autores, List<Genero> generos) {
+    public static void nuevoRegistro5(List<Autor> autores, List<Genero> generos) throws ParseException {
 
      	Autor autor = autores.get(4); //Meyer
 
@@ -280,21 +339,21 @@ public class App
     	Libro libro = new Libro(
     			"9998445033029", 
     			"Crepusculo", 
-    			new Date(), 
+    			DateUtils.parseFromText("20/10/2006"), 
     			IdiomaEnum.ESPANIOL, 
     			853,
     			autor, 
     			"Cuando Edward Cullen y Bella Swan se conocieron en «Crepúsculo», nació una historia de amor icónica.", 
     			generosLibro);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.EN_BIBLIOTECA);
+    	Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("28/05/2017"), EstadoLibroEnum.EN_BIBLIOTECA);
     	
     	DaoBiblioteca.save(biblioteca);
     	
     	print(biblioteca);
     }
     
-    public static void nuevoRegistro6(List<Autor> autores, List<Genero> generos) {
+    public static void nuevoRegistro6(List<Autor> autores, List<Genero> generos) throws ParseException {
 
     	Autor autor = autores.get(5); //Einstein
 
@@ -304,14 +363,14 @@ public class App
     	Libro libro = new Libro(
     			"9788420609744", 
     			"Sobre la teoria de la relatividad especial y general", 
-    			new Date(), 
+    			DateUtils.parseFromText("23/08/2010"), 
     			IdiomaEnum.ALEMAN, 
     			168,
     			autor, 
     			"Obra publicada en 1917, pocos años antes de que Albert Einstein (1879-1955) estableciera definitivamente las famosas ecuaciones de campo de la relatividad general.", 
     			generosLibro);
     	
-    	Biblioteca biblioteca = new Biblioteca(libro, new Date(), EstadoLibroEnum.PRESTADO);
+    	Biblioteca biblioteca = new Biblioteca(libro, DateUtils.parseFromText("01/02/2022"), EstadoLibroEnum.PRESTADO);
     	
     	DaoBiblioteca.save(biblioteca);
     	

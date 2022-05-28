@@ -76,4 +76,12 @@ public class DaoAutor {
 		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return cr.list();
 	}
+
+	public static void listarPorNacionalidad(String string) {
+		//3) Mostrar todos los autores que sean de nacionalidad Argentina
+		//Los campos que se deben mostrar son todos los pertenecientes a la clase Autor y Nacionalidad
+
+		// TODO Hacer consulta
+		
+	}
 }
