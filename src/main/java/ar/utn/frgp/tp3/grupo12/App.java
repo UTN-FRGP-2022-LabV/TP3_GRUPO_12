@@ -76,7 +76,7 @@ public class App
 		List<Libro> libros = DaoBiblioteca.listarOrdenadosPorISBN();
 		print("---------- Libros ordenados según ISBN de mayor a menor ----------" );
 		libros.stream().forEach(System.out::println);
-		
+		print("---------------------------------------------------------------------------------------------------------------------------" );
 		//2) Mostrar todos los libros de la biblioteca que se encuentran prestados.
 		//Los campos que se deben mostrar son ID biblioteca, fecha de alta y título del libro.
 	
@@ -85,16 +85,20 @@ public class App
 		for (Biblioteca libroPrestado : librosPrestados) {
 			print("ID Biblioteca: " + libroPrestado.getId() + " - Fecha Alta: " + DateUtils.formatFromDate(libroPrestado.getFechaDeAlta()) + " - Titulo: " + libroPrestado.getLibro().getTitulo());
 		}
-		
+		print("---------------------------------------------------------------------------------------------------------------------------" );
 		//3) Mostrar todos los autores que sean de nacionalidad Argentina
 		//Los campos que se deben mostrar son todos los pertenecientes a la clase Autor y Nacionalidad
-	
-		DaoAutor.listarPorNacionalidad("Argentina");
-		
-		//4) Mostrar el libro con ISBN 12345 junto con todos sus géneros
-		//Los campos que se deben mostrar la información de la clase libro junto con todos sus géneros.
-	
-		DaoBiblioteca.listarPorISBN("12345");
+			
+		print("---------- Autores con Nacionalidad Argentina -----------");
+		DaoAutor.listarPorNacionalidad();
+		print("---------------------------------------------------------------------------------------------------------------------------" );
+				
+		//4) Mostrar el libro con ISBN 12345 junto con todos sus gÃ©neros
+		//Los campos que se deben mostrar la informaciÃ³n de la clase libro junto con todos sus gÃ©neros.
+				
+		print("---------- Libro con ISBN '1788445003023' Junto con todos sus generos -----------");
+		DaoBiblioteca.listarPorISBN("1788445003023");
+		print("---------------------------------------------------------------------------------------------------------------------------" );
 		
 		//5) Mostrar el libro que tenga el mayor número de ISBN
 		//El único campo que se debe traer en la consulta es ISBN.

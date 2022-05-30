@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import ar.utn.frgp.tp3.grupo12.entidad.Biblioteca;
 import ar.utn.frgp.tp3.grupo12.entidad.Libro;
+import ar.utn.frgp.tp3.grupo12.utils.DateUtils;
 
 public class DaoBiblioteca {
 	
@@ -107,12 +108,21 @@ public class DaoBiblioteca {
 	// https://docs.jboss.org/hibernate/orm/3.5/reference/es-ES/html/queryhql.html
 	
 	public static void listarPorISBN(String isbn) {
-		//4) Mostrar el libro con ISBN 12345 junto con todos sus géneros
-		//Los campos que se deben mostrar la información de la clase libro junto con todos sus géneros.
+		//4) Mostrar el libro con ISBN 12345 junto con todos sus gÃ©neros
+		//Los campos que se deben mostrar la informaciÃ³n de la clase libro junto con todos sus gÃ©neros.
 
 		// TODO Hacer consulta
+		Session session = ConfigHibernate.getSession();
+		Libro Libro = (Libro) session.createQuery
+				("FROM Libro AS lib WHERE lib.isbn ="+isbn).uniqueResult();
+		System.out.print("ISBN: " + Libro.getIsbn() + ", Titulo: " + Libro.getTitulo() + ", FechaDeLanzamiento: " + DateUtils.formatFromDate(Libro.getFechaDeLanzamiento()) + ", idioma: "
+				+ Libro.getIdioma() + ", CantidadDePaginas: " + Libro.getCantidadDePaginas() + ", Autor: " + Libro.getAutor() + "\nDescripcion: "
+				+ Libro.getDescripcion() +"\n----GENEROS----\n"+Libro.getGeneros()+"\n");
 		
-	}
+		session.close();
+		
+		
+}
 
 	public static void obtenerConMayorISBN() {
 		//5) Mostrar el libro que tenga el mayor número de ISBN
