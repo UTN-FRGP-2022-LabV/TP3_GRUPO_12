@@ -77,24 +77,19 @@ public class DaoAutor {
 		return cr.list();
 	}
 
-	public static void listarPorNacionalidad() {
+	public static List<Object[]> listarPorNacionalidad(String nacionalidad) {
 		//3) Mostrar todos los autores que sean de nacionalidad Argentina
 		//Los campos que se deben mostrar son todos los pertenecientes a la clase Autor y Nacionalidad
-
-		// TODO Hacer consulta
-		
+		Nacionalidad argentino = DaoNacionalidad.findAll().stream().filter(nac -> "Argentino".equals(nac.getDescripcion())).findFirst().orElse(null);
+				
 		Session session = ConfigHibernate.getSession();
-		List<Object[]> ListaAutores_x_Nacionalidad = (List<Object[]>) session.createQuery
-				("FROM Autor AS au INNER JOIN au.nacionalidad WHERE au.nacionalidad.id = 2").list();
 		
-		for(Object[] objeto : ListaAutores_x_Nacionalidad) {
-			Autor autor = (Autor)objeto[0];
-			Nacionalidad nacionalidad = (Nacionalidad)objeto[1];
-			System.out.print("ID Autor: "+autor.getId()+" - Nombre y apellido: "+autor.getNombre()+" "+autor.getApellido()+" - Email: "+autor.getEmail()+
-					" - ID Nacionalidad: "+nacionalidad.getId()+" - Nacionalidad: "+nacionalidad.getDescripcion()+"\n");
-		}
-	
+		List<Object[]> listaAutores_x_Nacionalidad = (List<Object[]>) session.createQuery
+				("FROM Autor AS au INNER JOIN au.nacionalidad WHERE au.nacionalidad.id = " + argentino.getId()).list();
+		
 		session.close();
 		
-}
+		return listaAutores_x_Nacionalidad;
+		
+	}
 }

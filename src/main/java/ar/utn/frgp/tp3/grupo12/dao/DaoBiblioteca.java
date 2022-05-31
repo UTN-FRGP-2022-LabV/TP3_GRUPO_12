@@ -81,6 +81,9 @@ public class DaoBiblioteca {
 		return cr.list();
 	}
 
+	// Cualquier cosa consultar esta pagina de hql para armar las consultas
+	// https://docs.jboss.org/hibernate/orm/3.5/reference/es-ES/html/queryhql.html
+
 	public static List<Libro> listarOrdenadosPorISBN() {
 		//1) Mostrar todos los libros ordenados según ISBN de mayor a menor.
 		//Los campos que se deben mostrar son todos los pertenecientes a la clase Libro.
@@ -90,8 +93,6 @@ public class DaoBiblioteca {
 		session.close();
 		return libros;
 	}
-	
-//List<Object[]> session.createQuery("FROM Libro as l INNER JOIN l.autor").list();
 	
 	public static List<Biblioteca> listarPrestados() {
 		//2) Mostrar todos los libros de la biblioteca que se encuentran prestados.
@@ -103,41 +104,44 @@ public class DaoBiblioteca {
 		return biblioteca;
 		
 	}
-
-	// Cualquier cosa consultar esta pagina de hql para armar las consultas
-	// https://docs.jboss.org/hibernate/orm/3.5/reference/es-ES/html/queryhql.html
 	
-	public static void listarPorISBN(String isbn) {
+	public static Libro listarPorISBN(String isbn) {
 		//4) Mostrar el libro con ISBN 12345 junto con todos sus gÃ©neros
 		//Los campos que se deben mostrar la informaciÃ³n de la clase libro junto con todos sus gÃ©neros.
 
-		// TODO Hacer consulta
 		Session session = ConfigHibernate.getSession();
-		Libro Libro = (Libro) session.createQuery
+		Libro libro = (Libro) session.createQuery
 				("FROM Libro AS lib WHERE lib.isbn ="+isbn).uniqueResult();
-		System.out.print("ISBN: " + Libro.getIsbn() + ", Titulo: " + Libro.getTitulo() + ", FechaDeLanzamiento: " + DateUtils.formatFromDate(Libro.getFechaDeLanzamiento()) + ", idioma: "
-				+ Libro.getIdioma() + ", CantidadDePaginas: " + Libro.getCantidadDePaginas() + ", Autor: " + Libro.getAutor() + "\nDescripcion: "
-				+ Libro.getDescripcion() +"\n----GENEROS----\n"+Libro.getGeneros()+"\n");
 		
 		session.close();
 		
-		
+		return libro;
 }
 
-	public static void obtenerConMayorISBN() {
+	public static String obtenerConMayorISBN() {
 		//5) Mostrar el libro que tenga el mayor número de ISBN
 		//El único campo que se debe traer en la consulta es ISBN.
 
-		// TODO Hacer consulta
+		Session session = ConfigHibernate.getSession();
+		String isbn = (String) session.createQuery
+				("SELECT max(lib.isbn) as isbn FROM Libro AS lib").uniqueResult();
 		
+		session.close();
+		return isbn;
 	}
 
-	public static void obtenerCantidadLibrosPorGenero() {
+	public static List<Object[]> obtenerCantidadLibrosPorGenero() {
 		//6) Mostrar la cantidad de libros que existen para cada género.
 		//Los campos que se deben mostrar son ID género, descripción y cantidad.	
 
-		// TODO Hacer consulta
+		Session session = ConfigHibernate.getSession();
 		
+		List<Object[]> objects = session.createQuery("Select g.id, g.descripcion, COUNT(g.id) FROM Libro l INNER JOIN l.generos g GROUP BY g.id, g.descripcion").list();
+		
+		
+		session.close();
+		
+		return objects;
 	}
 	
 }

@@ -90,25 +90,42 @@ public class App
 		//Los campos que se deben mostrar son todos los pertenecientes a la clase Autor y Nacionalidad
 			
 		print("---------- Autores con Nacionalidad Argentina -----------");
-		DaoAutor.listarPorNacionalidad();
+		List<Object[]> autoresArgentinos = DaoAutor.listarPorNacionalidad("Argentino");
+		
+		for(Object[] objeto : autoresArgentinos) {
+			Autor autor = (Autor)objeto[0];
+			Nacionalidad nacionalidad = (Nacionalidad)objeto[1];
+			System.out.print("ID Autor: "+autor.getId()+" - Nombre y apellido: "+autor.getNombre()+" "+autor.getApellido()+" - Email: "+autor.getEmail()+
+					" - ID Nacionalidad: "+nacionalidad.getId()+" - Nacionalidad: "+nacionalidad.getDescripcion()+"\n");
+		}
 		print("---------------------------------------------------------------------------------------------------------------------------" );
 				
-		//4) Mostrar el libro con ISBN 12345 junto con todos sus gÃ©neros
-		//Los campos que se deben mostrar la informaciÃ³n de la clase libro junto con todos sus gÃ©neros.
+		//4) Mostrar el libro con ISBN 12345 junto con todos sus generos
+		//Los campos que se deben mostrar la informacion de la clase libro junto con todos sus generos.
 				
 		print("---------- Libro con ISBN '1788445003023' Junto con todos sus generos -----------");
-		DaoBiblioteca.listarPorISBN("1788445003023");
-		print("---------------------------------------------------------------------------------------------------------------------------" );
+		Libro libro = DaoBiblioteca.listarPorISBN("1788445003023");
+		
+		System.out.print("ISBN: " + libro.getIsbn() + ", Titulo: " + libro.getTitulo() + ", FechaDeLanzamiento: " + DateUtils.formatFromDate(libro.getFechaDeLanzamiento()) + ", idioma: "
+				+ libro.getIdioma() + ", CantidadDePaginas: " + libro.getCantidadDePaginas() + ", Autor: " + libro.getAutor() + "\nDescripcion: "
+				+ libro.getDescripcion() +"\n----GENEROS----\n"+libro.getGeneros()+"\n");
+
+		print("-----------Libro con mayor ISBN--------------------" );
 		
 		//5) Mostrar el libro que tenga el mayor número de ISBN
 		//El único campo que se debe traer en la consulta es ISBN.
 	
-		DaoBiblioteca.obtenerConMayorISBN();
+		String isbn = DaoBiblioteca.obtenerConMayorISBN();
+		print("ISBN: " + isbn);
 		
 		//6) Mostrar la cantidad de libros que existen para cada género.
 		//Los campos que se deben mostrar son ID género, descripción y cantidad.	
-		
-		DaoBiblioteca.obtenerCantidadLibrosPorGenero();
+		print("-------------Cantidad de libros que existen para cada género ---------------" );
+		List<Object[]> objects = DaoBiblioteca.obtenerCantidadLibrosPorGenero();
+		for(Object[] object:objects){
+			print("ID GENERO: " + object[0] + " | DESCRIPCION: " + object[1] + " | CANTIDAD: " + object[2]);
+		}
+		print("------------------------------------------------------------------" );
 	}
 
 	private static void ejercicioTP3() {
